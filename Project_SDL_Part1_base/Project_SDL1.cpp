@@ -58,19 +58,77 @@ application::application(unsigned n_sheep, unsigned n_wolf) {
 
     ground_ = std::make_unique<ground>(window_surface_ptr_);
 
+    //std::vector<std::shared_ptr<animal>> animals = ground_->getVect(); //possible memory leak. Need to be std::shared_ptr<std::vector<std::shared_ptr<animal>>> ????
+    
 
 
     for (size_t i = 0; i < n_sheep; i++)
          ground_->add_animal(std::make_shared<sheep>(window_surface_ptr_));
 
+    
 
+    for (size_t i = 0; i < n_wolf; i++)
+        ground_->add_animal(std::make_shared<wolf>(window_surface_ptr_));
+
+    
+    animals = ground_->getVect();
+
+    
+    setWolfesTarget();
 }
+
+void application::setWolfesTarget() {
+    std::vector<int> Xsheeps;
+    std::vector<int> Ysheeps;
+
+    for(std::shared_ptr<animal> &ani : animals)
+    {
+        if (std::string(typeid(*ani).name()) == "5sheep")
+        {
+            int x = ani->rect.x;
+            int y = ani->rect.y;
+            Xsheeps.push_back(x);
+            Ysheeps.push_back(y);
+        }
+    }
+    for(std::shared_ptr<animal> &ani : animals)
+    {
+        if (std::string(typeid(*ani).name()) == "4wolf")
+        {
+            int xmin = frame_width;
+            int ymin = frame_height;
+            int xwolf = ani->rect.x;
+            int ywolf = ani->rect.y;
+            int xTarget;
+            int yTarget;
+            for (size_t i = 0; i < Xsheeps.size(); i++)
+            {
+                if (abs(xwolf - Xsheeps[i]) < xmin)
+                {
+                    xTarget = Xsheeps[i];
+                    xmin = abs(xwolf - Xsheeps[i]);
+                }
+                if (abs(ywolf - Ysheeps[i]) < ymin)
+                {
+                    yTarget = Ysheeps[i];
+                    ymin = abs(ywolf - Ysheeps[i]);
+                }
+            }
+            ani->setTargetX(xTarget);
+            ani->setTargetY(yTarget);
+        }
+    }
+    Xsheeps.clear();
+    Ysheeps.clear();
+}
+
 
 int application::loop(unsigned period) {
     SDL_Rect windowsRect = SDL_Rect{ 0,0,frame_width, frame_height };
     bool quit = false;
     
     while (!quit && (SDL_GetTicks() <= period * 1000)) { 
+        setWolfesTarget();
         SDL_FillRect(window_surface_ptr_, &windowsRect, SDL_MapRGB(window_surface_ptr_->format, 0, 255, 0));
         SDL_PollEvent(&window_event_);
         if (window_event_.type == SDL_WINDOWEVENT && window_event_.window.event == SDL_WINDOWEVENT_CLOSE) //seems like u have to do that
@@ -91,6 +149,8 @@ application::~application() {
 //animal part ------
 animal::animal(const std::string& file_path, SDL_Surface *window_surface_ptr) {
     //load_surface_for(file_path.c_str(), window_surface_ptr);
+    //this->ground_ = ground_;
+    //this->app = app;
     image_ptr_ = IMG_Load(file_path.c_str());
     rect.x = 0; //rand() % with
     rect.y = 0;
@@ -110,6 +170,16 @@ void animal::draw() {
 
 void animal::move() {
     return;
+}
+
+int animal::myrandint(int lower, int upper) {
+    
+    //for random : https://stackoverflow.com/questions/288739/generate-random-numbers-uniformly-over-an-entire-range
+    
+    std::random_device                  rand_dev;
+    std::mt19937                        generator(rand_dev());
+    std::uniform_int_distribution<int>  distr(lower, upper);
+    return distr(generator);
 }
 
 
@@ -137,21 +207,14 @@ void ground::update(SDL_Surface *window_surface_ptr_) {
     }
 }
 
+
 //sheeep ------------------
 sheep::sheep(SDL_Surface *window_surface_ptr) : animal("./media/sheep.png", window_surface_ptr) {
-    //for random : https://stackoverflow.com/questions/288739/generate-random-numbers-uniformly-over-an-entire-range
     const int range_from  = 0;
     const int range_to_frame_width    = frame_width - getImage()->w - frame_boundary;
     const int range_to_frame_height    = frame_height - getImage()->h - frame_boundary;
-    std::random_device                  rand_dev;
-    std::mt19937                        generator(rand_dev());
-    std::uniform_int_distribution<int>  distr(range_from, range_to_frame_width);
-    std::uniform_int_distribution<int>  distr2(range_from, range_to_frame_height);
-
-    int a = distr(generator);
-    int b = distr2(generator);
-
-    std::cout << a << '\n';
+    int a = myrandint(range_from,range_to_frame_width);
+    int b = myrandint(range_from,range_to_frame_height);
     this->rect.x = a; 
     this->rect.y = b; 
 }
@@ -168,6 +231,71 @@ void sheep::move() {
     this->rect.x = this->rect.x + x_state;
     this->rect.y = this->rect.y + y_state;
 }
+
+void sheep::setTargetX(int x)
+{
+    return;
+}
+
+void sheep::setTargetY(int y)
+{
+    return;
+}
+
+
+
+//wolf ------------------
+wolf::wolf(SDL_Surface *window_surface_ptr) : animal("./media/wolf.png", window_surface_ptr) {
+    const int range_from  = 0;
+    const int range_to_frame_width    = frame_width - getImage()->w - frame_boundary;
+    const int range_to_frame_height    = frame_height - getImage()->h - frame_boundary;
+    int a = myrandint(range_from,range_to_frame_width);
+    int b = myrandint(range_from,range_to_frame_height);
+    this->rect.x = a; 
+    this->rect.y = b; 
+}
+
+void wolf::move() {
+    if (rect.x - targetX <= 0)
+    {
+        rect.x = rect.x + 1;
+    }
+    else
+    {
+        rect.x = rect.x - 1;
+    }
+    if (rect.y - targetY <= 0)
+    {
+        rect.y = rect.y + 1;
+    }
+    else
+    {
+        rect.y = rect.y - 1;
+    }
+
+}
+
+void wolf::setTargetX(int x)
+{
+    this->targetX = x;
+}
+
+void wolf::setTargetY(int y)
+{
+    this->targetY = y;
+}
+
+
+/*
+std::shared_ptr<sheep> wolf::findTarget() {
+    for (std::shared_ptr<animal> &ani : ground_->getAnimals()) {
+        std::cout<<typeid(ani).name();
+        }
+    for (std::shared_ptr<animal> &ani : ground_->getAnimals()) {
+        if (typeid(ani).name())
+    }
+}
+*/
 
 
 
@@ -187,4 +315,6 @@ SDL_Surface* load_surface_for(const std::string& path,
 
   // i don't understand why use SDL_ConvertSurface nor the use of this function
 }
+
+
 } // namespace

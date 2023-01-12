@@ -3,9 +3,8 @@
 
 CMakeFiles/SDL_part1.dir/Project_SDL1.cpp.o
  /home/natale/Documents/projectSDL/Project_SDL_Part1_base/Project_SDL1.cpp
- /home/natale/Documents/Project_SDL/Base_Project/Project_SDL_Part1_base/Project_SDL1.cpp
  /usr/include/stdc-predef.h
- /home/natale/Documents/Project_SDL/Base_Project/Project_SDL_Part1_base/Project_SDL1.h
+ /home/natale/Documents/projectSDL/Project_SDL_Part1_base/Project_SDL1.h
  /usr/include/SDL2/SDL.h
  /usr/include/SDL2/SDL_main.h
  /usr/include/SDL2/SDL_stdinc.h
@@ -413,9 +412,8 @@ CMakeFiles/SDL_part1.dir/Project_SDL1.cpp.o
 
 CMakeFiles/SDL_part1.dir/main.cpp.o
  /home/natale/Documents/projectSDL/Project_SDL_Part1_base/main.cpp
- /home/natale/Documents/Project_SDL/Base_Project/Project_SDL_Part1_base/main.cpp
  /usr/include/stdc-predef.h
- /home/natale/Documents/Project_SDL/Base_Project/Project_SDL_Part1_base/Project_SDL1.h
+ /home/natale/Documents/projectSDL/Project_SDL_Part1_base/Project_SDL1.h
  /usr/include/SDL2/SDL.h
  /usr/include/SDL2/SDL_main.h
  /usr/include/SDL2/SDL_stdinc.h
