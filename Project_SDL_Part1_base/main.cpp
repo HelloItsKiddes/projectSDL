@@ -1,6 +1,17 @@
 #include "Project_SDL1.h"
 #include <stdio.h>
 #include <string>
+#include <stdexcept>
+
+
+#ifdef WINDOWSOS
+  #include <SDL.h>
+  #include <SDL_image.h>
+#else
+  #include <SDL2/SDL.h>
+  #include <SDL2/SDL_image.h>
+#endif
+
 
 int main(int argc, char* argv[]) {
 
@@ -15,7 +26,7 @@ int main(int argc, char* argv[]) {
 
   std::cout << "Done with initilization" << std::endl;
 
-  application_t my_app(std::stoul(argv[1]), std::stoul(argv[2]));
+  application my_app(std::stoul(argv[1]), std::stoul(argv[2])); // two string transformed in integer (le nb de moutons et de loups)
 
   std::cout << "Created window" << std::endl;
 

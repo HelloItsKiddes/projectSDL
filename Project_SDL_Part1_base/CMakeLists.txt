@@ -32,6 +32,7 @@ ELSE()
   include_directories(${SDL2_INCLUDE_DIRS})
   include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
 
+  add_compile_options(-g)
   add_executable(SDL_part1 main.cpp Project_SDL1.cpp)
   target_link_libraries(SDL_part1 ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
 ENDIF()

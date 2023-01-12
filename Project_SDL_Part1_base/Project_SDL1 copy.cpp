@@ -50,53 +50,46 @@ application::application(unsigned n_sheep, unsigned n_wolf) {
     //here we creat window
     window_ptr_ = SDL_CreateWindow(
         "SHEEP AND WOLFES",                  // title
-        0,//                         initial position
-        0,//                          initial position
+        0,//SDL_WINDOWPOS_UNDEFINED,            initial position
+        0,//SDL_WINDOWPOS_UNDEFINED,            initial position
         frame_width, frame_height, SDL_WINDOW_SHOWN);
 
     window_surface_ptr_ = SDL_GetWindowSurface(window_ptr_);
 
-    ground_ = std::make_unique<ground>(window_surface_ptr_);
-
-
+    ground_ = std::make_uniqueground>(window_surface_ptr_);
 
     for (size_t i = 0; i < n_sheep; i++)
-         ground_->add_animal(std::make_shared<sheep>(window_surface_ptr_));
-
-
+        ground_->add_animal(std::make_shared<sheep>(window_surface_ptr_));
+/*
+    for (size_t i = 0; i < n_wolf; i++)
+        ground_->add_animal(std::make_shared<wolf>(window_surface_ptr_));*/
 }
 
 int application::loop(unsigned period) {
     SDL_Rect windowsRect = SDL_Rect{ 0,0,frame_width, frame_height };
     bool quit = false;
-    
     while (!quit && (SDL_GetTicks() <= period * 1000)) { 
         SDL_FillRect(window_surface_ptr_, &windowsRect, SDL_MapRGB(window_surface_ptr_->format, 0, 255, 0));
         SDL_PollEvent(&window_event_);
-        if (window_event_.type == SDL_WINDOWEVENT && window_event_.window.event == SDL_WINDOWEVENT_CLOSE) //seems like u have to do that
+        if (window_event_.type == SDL_QUIT)  //|| window_event_.type == SDL_WINDOWEVENT && window_event_.window.event == SDL_WINDOWEVENT_CLOSE
             break;
-        ground_->update(window_surface_ptr_);
+        ground_->update();
         SDL_UpdateWindowSurface(window_ptr_);
-        SDL_Delay(frame_time * 30);  // Pause execution for framerate milliseconds
+        SDL_Delay(frame_time * 1000);  // Pause execution for framerate milliseconds
     }
-    return 0;
-}
-
-application::~application() {
-    // Close and destroy the window
-    SDL_DestroyWindow(window_ptr_);
+    return 1;
 }
 
 
 //animal part ------
-animal::animal(const std::string& file_path, SDL_Surface *window_surface_ptr) {
+animal::animal(const std::string& file_path, SDL_Surface* window_surface_ptr) {
     //load_surface_for(file_path.c_str(), window_surface_ptr);
     image_ptr_ = IMG_Load(file_path.c_str());
-    rect.x = 0; //rand() % with
+    window_surface_ptr_ = window_surface_ptr;
+    rect.x = 200; //rand() % with
     rect.y = 0;
     rect.w = image_ptr_->w;
     rect.h = image_ptr_->h;
-    window_surface_ptr_ = window_surface_ptr;
 
 };
 
@@ -108,10 +101,6 @@ void animal::draw() {
     SDL_BlitScaled(image_ptr_, NULL, window_surface_ptr_, &rect);
 };
 
-void animal::move() {
-    return;
-}
-
 
 
 
@@ -119,18 +108,15 @@ void animal::move() {
 //ground part -------
 ground::ground(SDL_Surface* window_surface_ptr) {
     window_surface_ptr_ = window_surface_ptr;
-    animalsVect_ = std::vector<std::shared_ptr<animal>>();
+    animalsVect = std::vector<std::shared_ptr<animal>>();
 }
-
-ground::~ground() {
-};
 
 void ground::add_animal(std::shared_ptr<animal> newAnimal) {
-    animalsVect_.push_back(newAnimal);
+    animalsVect.push_back(newAnimal);
 }
 
-void ground::update(SDL_Surface *window_surface_ptr_) {
-    for (std::shared_ptr<animal> &oneAnimal : animalsVect_)
+void ground::update() {
+    for (std::shared_ptr<animal> oneAnimal : animalsVect)
     {
         oneAnimal->draw();
         oneAnimal->move();
@@ -138,38 +124,14 @@ void ground::update(SDL_Surface *window_surface_ptr_) {
 }
 
 //sheeep ------------------
-sheep::sheep(SDL_Surface *window_surface_ptr) : animal("./media/sheep.png", window_surface_ptr) {
-    //for random : https://stackoverflow.com/questions/288739/generate-random-numbers-uniformly-over-an-entire-range
-    const int range_from  = 0;
-    const int range_to_frame_width    = frame_width - getImage()->w - frame_boundary;
-    const int range_to_frame_height    = frame_height - getImage()->h - frame_boundary;
-    std::random_device                  rand_dev;
-    std::mt19937                        generator(rand_dev());
-    std::uniform_int_distribution<int>  distr(range_from, range_to_frame_width);
-    std::uniform_int_distribution<int>  distr2(range_from, range_to_frame_height);
-
-    int a = distr(generator);
-    int b = distr2(generator);
-
-    std::cout << a << '\n';
-    this->rect.x = a; 
-    this->rect.y = b; 
+sheep::sheep(SDL_Surface* window_surface_ptr) : animal("./media/sheep.png", window_surface_ptr) {
+    this->rect.x = rand() % 200; //getRandomSpawn(DIRECTION::HORIZONTAL);
+    this->rect.y = rand() % 200; // getRandomSpawn(DIRECTION::VERTICAL);
 }
 
 void sheep::move() {
-    int next_x = this->rect.x + x_state;
-    int next_y = this->rect.y + y_state;
-    if (next_x + getImage()->w >= frame_width - frame_boundary || next_x <= 0 + frame_boundary) {
-        x_state = x_state * -1;
-    }
-    if (next_y + getImage()->h >= frame_height - frame_boundary || next_y <= 0 + frame_boundary) {
-        y_state = y_state * -1;
-    }
-    this->rect.x = this->rect.x + x_state;
-    this->rect.y = this->rect.y + y_state;
+    return;
 }
-
-
 
 
 
@@ -184,7 +146,6 @@ SDL_Surface* load_surface_for(const std::string& path,
   return window_surface_ptr;
   // Helper function to load a png for a specific surface
   // See SDL_ConvertSurface 
-
-  // i don't understand why use SDL_ConvertSurface nor the use of this function
+  // i don't understand why use SDL_ConvertSurface
 }
 } // namespace
