@@ -10,6 +10,17 @@
 #include <memory>
 #include <optional>
 #include <vector>
+#include <set>
+#include <algorithm>
+#include <cassert>
+#include <cstdlib>
+#include <numeric>
+#include <random>
+#include <string>
+
+
+#ifndef Project_SDL_H
+#define Project_SDL_H
 
 // Defintions
 constexpr double frame_rate = 60.0; // refresh rate
@@ -18,127 +29,96 @@ constexpr unsigned frame_width = 1400/2; // Width of window in pixel
 constexpr unsigned frame_height = 900/2; // Height of window in pixel
 // Minimal distance of animals to the border
 // of the screen
-constexpr unsigned frame_boundary = 0;
+constexpr unsigned frame_boundary = 5;
+constexpr unsigned ReproduceTime_ = 1000; //in milliseconds
+constexpr unsigned interact_range = 20;
+constexpr unsigned maxAnimals = 12;
+
+constexpr unsigned dieFromHunger = 15000;
 
 // Helper function to initialize SDL
 void init();
 class application;
-class animal {
-  private:
-    SDL_Surface* window_surface_ptr_; // ptr to the surface on which we want the
+
+struct Target {int x; int y;};
+
+class interacting_object {
+  protected:
+    std::set<std::string> props;
+
+
+  public:
+    virtual ~interacting_object(); 
+    std::set<std::string> * getProperties() {
+      return &props; //raw pointer i don't know if its good
+    }
+
+    void addProperty(std::string prop) {
+      props.insert(prop);
+    }
+
+    void removeProperty(std::string prop) {
+      props.erase(prop);
+    }
+
+    bool haveProperty(std::string prop) {
+      return props.find(prop) != props.end();
+    }
+    
+    void printProps();
+
+    virtual void interact(std::shared_ptr<interacting_object> other);
+};
+
+
+class rendered_object : public interacting_object {
+  
+  protected:
+  
+  double x;
+  double y;
+  SDL_Surface* window_surface_ptr_; // ptr to the surface on which we want the
                                       // animal to be drawn, also non-owning
-    SDL_Surface* image_ptr_; // The texture of the sheep (the loaded image), use
+  SDL_Surface* image_ptr_; // The texture of the sheep (the loaded image), use
                             // load_surface_for
     // todo: Attribute(s) to define its position
   
-    
+  SDL_Rect rect;
+
+  public: 
+    rendered_object(SDL_Surface* window, const std::string& filepath);
+    virtual ~rendered_object();
+    double distanceTo(std::shared_ptr<rendered_object> other);
+    int getX();
+    int getY();
+    void setY(int x);
+    void setX(int y);
+
+};
+
+class moving_object : public rendered_object {
+  
   protected:
-    int x_state = 1;
-    int y_state = 1;
-
-    //std::shared_ptr<application> app;
-    //std::shared_ptr<ground> ground_;
-      
+    double speed = 1;
+    double stepX;
+    double stepY;
+    int myrandint(int lower, int upper); //randint [lower,upper[
   public:
+    moving_object(SDL_Surface* window, const std::string& filepath);
+
     
-    SDL_Rect rect;
-    
-
-    //animal(const std::string& file_path,SDL_Surface *window_surface_ptr,std::shared_ptr<ground> ground_);
-    animal(const std::string& file_path, SDL_Surface *window_surface_ptr);
-    // todo: The constructor has to load the sdl_surface that corresponds to the
-    // texture
-    virtual ~animal(); // todo: Use the destructor to release memory and "clean up
-                // behind you"
-
-    void draw() ; // todo: Draw the animal on the screen <-> window_surface_ptr.
-                  // Note that this function is not virtual, it does not depend
-                  // on the static type of the instance
-
-    virtual void move() = 0; // todo: Animals move around, but in a different
-      // fashion depending on which type of animal
-
-    int myrandint(int lower, int upper);
-
-    SDL_Surface* getImage()
-    {
-      return image_ptr_;
-    }
-    virtual void setTargetX(int x) = 0;
-
-    virtual void setTargetY(int y) = 0 ;
+    virtual ~moving_object();
 };
 
-// Insert here:
-// class sheep, derived from animal
-class sheep : public animal {
+#include "animal.h"
 
-  public:
-  sheep(SDL_Surface *window_surface_ptr);
-	virtual ~sheep() {}
-	virtual void move() override;
-
-  void setTargetX(int x);
-
-  void setTargetY(int y);
-  // implement functions that are purely virtual in base class
-};
-
-
-
-// Insert here:
-// class wolf, derived from animal
-// Use only sheep at first. Once the application works
-// for sheep you can add the wolves
-class wolf : public animal {
-  private:
-    int targetX;
-    int targetY;
-
-  public:
-
-  wolf(SDL_Surface *window_surface_ptr);
-	virtual ~wolf() {}
-	virtual void move() override;
-
-  void setTargetX(int x);
-
-  void setTargetY(int y);
-};
-
+#include "sheep.h"
+#include "wolf.h"
+#include "ground.h"
 
 // The "ground" on which all the animals live (like the std::vector
 // in the zoo example).
-class ground {
-private:
-  // Attention, NON-OWNING ptr, again to the screen
-  SDL_Surface* window_surface_ptr_;
 
-  std::vector<std::shared_ptr<animal>> animalsVect_;
-  // here
-  
-public:
- 
-
-  ground(SDL_Surface* window_surface_ptr); // todo: Ctor
-
-  ~ground(); // todo: Dtor, again for clean up (if necessary) 
-  //i dunno if it is necessary 
-
-  void add_animal(std::shared_ptr<animal> animalToAdd); // todo: Add an animal
-
-
-  void update(SDL_Surface *window_surface_ptr_); // todo: "refresh the screen": Move animals and draw them
-  // Possibly other methods, depends on your implementation
-
-  void test();
-
-  std::vector<std::shared_ptr<animal>> getVect()
-  {
-    return animalsVect_;
-  }
-  
-};
 
 // The application class, which is in charge of generating the window
 class application : public std::enable_shared_from_this<application> {
@@ -152,12 +132,16 @@ private:
   // Other attributes here, for example an instance of ground
 
 protected:
-  std::vector<std::shared_ptr<animal>> animals;
+  std::set<std::shared_ptr<animal>> animals;
 public:
   application(unsigned n_sheep, unsigned n_wolf); // Ctor
   ~application();                                 // dtor
 
   void setWolfesTarget();
+
+  void makeObjectsInteract();
+
+  void remove_dead();
 
   int loop(unsigned period); // main loop of the application.
                              // this ensures that the screen is updated
@@ -165,4 +149,8 @@ public:
                              // See SDL_GetTicks() and SDL_Delay() to enforce a
                              // duration the application should terminate after
                              // 'period' seconds
+  void addBabies();
 };
+
+
+#endif

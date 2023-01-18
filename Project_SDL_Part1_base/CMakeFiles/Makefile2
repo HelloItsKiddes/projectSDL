@@ -81,12 +81,12 @@ clean: CMakeFiles/SDL_part1.dir/clean
 CMakeFiles/SDL_part1.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SDL_part1.dir/build.make CMakeFiles/SDL_part1.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SDL_part1.dir/build.make CMakeFiles/SDL_part1.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/natale/Documents/projectSDL/Project_SDL_Part1_base/CMakeFiles --progress-num=1,2,3 "Built target SDL_part1"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/natale/Documents/projectSDL/Project_SDL_Part1_base/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target SDL_part1"
 .PHONY : CMakeFiles/SDL_part1.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/SDL_part1.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/natale/Documents/projectSDL/Project_SDL_Part1_base/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/natale/Documents/projectSDL/Project_SDL_Part1_base/CMakeFiles 7
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/SDL_part1.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/natale/Documents/projectSDL/Project_SDL_Part1_base/CMakeFiles 0
 .PHONY : CMakeFiles/SDL_part1.dir/rule

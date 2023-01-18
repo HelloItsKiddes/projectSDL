@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required (VERSION 3.0)
 project ("Project_SDL_sub")
-
+SET(CMAKE_CXX_COMPILER "/usr/bin/g++")
 IF(WIN32)
   message(STATUS "Building for windows")
 
@@ -22,17 +22,19 @@ IF(WIN32)
   include_directories(${SDL2IMAGE_INCLUDE_DIRS})
   link_directories(${SDL2_LINK_DIRS}, ${SDL2IMAGE_LINK_DIRS})
 
-  add_executable(SDL_part1 main.cpp Project_SDL1.cpp)
+  add_executable(SDL_part1 main.cpp Project_SDL1.cpp animal.cpp sheep.cpp wolf.cpp ground.cpp)
   target_link_libraries(SDL_part1 PUBLIC SDL2 SDL2main SDL2_image)
 ELSE()
   message(STATUS "Building for Linux or Mac")
+  set(CMAKE_CXX_STANDARD 20)
 
   find_package(SDL2 REQUIRED)
   find_package(SDL2_IMAGE REQUIRED)
   include_directories(${SDL2_INCLUDE_DIRS})
   include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
-
+  #add_compile_options(-fsanitize=address)
+  #add_link_options(-fsanitize=address)
   add_compile_options(-g)
-  add_executable(SDL_part1 main.cpp Project_SDL1.cpp)
+  add_executable(SDL_part1 main.cpp Project_SDL1.cpp animal.cpp sheep.cpp wolf.cpp ground.cpp )
   target_link_libraries(SDL_part1 ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
 ENDIF()

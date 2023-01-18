@@ -1,6 +1,7 @@
-CMakeFiles/SDL_part1.dir/main.cpp.o: \
- /home/natale/Documents/projectSDL/Project_SDL_Part1_base/main.cpp \
+CMakeFiles/SDL_part1.dir/animal.cpp.o: \
+ /home/natale/Documents/projectSDL/Project_SDL_Part1_base/animal.cpp \
  /usr/include/stdc-predef.h \
+ /home/natale/Documents/projectSDL/Project_SDL_Part1_base/animal.h \
  /home/natale/Documents/projectSDL/Project_SDL_Part1_base/Project_SDL1.h \
  /usr/include/SDL2/SDL.h /usr/include/SDL2/SDL_main.h \
  /usr/include/SDL2/SDL_stdinc.h /usr/include/SDL2/SDL_config.h \
@@ -361,8 +362,6 @@ CMakeFiles/SDL_part1.dir/main.cpp.o: \
  /usr/include/c++/11/bits/random.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/opt_random.h \
  /usr/include/c++/11/bits/random.tcc \
- /home/natale/Documents/projectSDL/Project_SDL_Part1_base/animal.h \
  /home/natale/Documents/projectSDL/Project_SDL_Part1_base/sheep.h \
  /home/natale/Documents/projectSDL/Project_SDL_Part1_base/wolf.h \
- /home/natale/Documents/projectSDL/Project_SDL_Part1_base/ground.h \
- /usr/include/SDL2/SDL.h /usr/include/SDL2/SDL_image.h
+ /home/natale/Documents/projectSDL/Project_SDL_Part1_base/ground.h
