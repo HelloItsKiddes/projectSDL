@@ -31,21 +31,24 @@ constexpr unsigned frame_height = 900/2; // Height of window in pixel
 // of the screen
 constexpr unsigned frame_boundary = 5;
 constexpr unsigned ReproduceTime_ = 1000; //in milliseconds
-constexpr unsigned interact_range = 20;
+constexpr unsigned shortInteract_range = 10;
+constexpr unsigned longInteract_range = 80;
 constexpr unsigned maxAnimals = 12;
+constexpr unsigned boostTime = 3000;
+constexpr unsigned baseSpeedSheep = 1;
+constexpr unsigned rangeDog = 50;
 
-constexpr unsigned dieFromHunger = 15000;
+constexpr unsigned dieFromHunger = 20000;
 
 // Helper function to initialize SDL
 void init();
 class application;
 
-struct Target {int x; int y;};
-
 class interacting_object {
   protected:
     std::set<std::string> props;
-
+    double x;
+    double y;
 
   public:
     virtual ~interacting_object(); 
@@ -64,10 +67,15 @@ class interacting_object {
     bool haveProperty(std::string prop) {
       return props.find(prop) != props.end();
     }
+
+    double getX();
+    double getY();
     
     void printProps();
 
     virtual void interact(std::shared_ptr<interacting_object> other);
+
+    virtual void interactLong(std::shared_ptr<interacting_object> other);
 };
 
 
@@ -75,17 +83,16 @@ class rendered_object : public interacting_object {
   
   protected:
   
-  double x;
-  double y;
   SDL_Surface* window_surface_ptr_; // ptr to the surface on which we want the
                                       // animal to be drawn, also non-owning
   SDL_Surface* image_ptr_; // The texture of the sheep (the loaded image), use
                             // load_surface_for
     // todo: Attribute(s) to define its position
   
-  SDL_Rect rect;
+ 
 
   public: 
+    SDL_Rect rect;
     rendered_object(SDL_Surface* window, const std::string& filepath);
     virtual ~rendered_object();
     double distanceTo(std::shared_ptr<rendered_object> other);
@@ -93,6 +100,12 @@ class rendered_object : public interacting_object {
     int getY();
     void setY(int x);
     void setX(int y);
+
+    SDL_Surface* getImage()
+    {
+      return image_ptr_;
+    }
+    void draw() ;
 
 };
 
@@ -108,12 +121,23 @@ class moving_object : public rendered_object {
 
     
     virtual ~moving_object();
+    virtual void move();
+};
+
+class playable_character : public moving_object {
+    public:
+        playable_character(const std::string& file_path, SDL_Surface *window_surface_ptr);
+        virtual ~playable_character();
+        virtual void move();
 };
 
 #include "animal.h"
 
 #include "sheep.h"
 #include "wolf.h"
+
+#include "sheperd.h"
+#include "dog.h"
 #include "ground.h"
 
 // The "ground" on which all the animals live (like the std::vector
@@ -129,6 +153,7 @@ private:
   SDL_Event window_event_;
 
   std::unique_ptr<ground> ground_;
+  std::shared_ptr<sheperd> sheperd_;
   // Other attributes here, for example an instance of ground
 
 protected:
@@ -136,6 +161,8 @@ protected:
 public:
   application(unsigned n_sheep, unsigned n_wolf); // Ctor
   ~application();                                 // dtor
+
+  void getInputs();
 
   void setWolfesTarget();
 

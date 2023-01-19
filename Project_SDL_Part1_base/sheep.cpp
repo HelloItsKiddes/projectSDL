@@ -31,9 +31,17 @@ sheep::sheep(SDL_Surface *window_surface_ptr,int x,int y) : sheep(window_surface
 */
 
 void sheep::move() {
+    if (SDL_GetTicks() - lastBoost > boostTime) {
+        speed = baseSpeedSheep;
+        this->removeProperty("fleeing");
+    }
     if ( abs(target.x - this->getX()) + abs(target.y - this->getY()) < 4)
     {
         setRandTarget();
+        if (this->haveProperty("fleeing")) {
+            fleeFromTarget();
+            
+        }
 
         moveToTarget();
     }
@@ -42,14 +50,10 @@ void sheep::move() {
     }
 }
 
-void sheep::setTargetX(int x)
+void sheep::setTarget(int nx, int ny)
 {
-    return;
-}
-
-void sheep::setTargetY(int y)
-{
-    return;
+    this->target.x = nx;
+    this->target.y = ny;
 }
 
 
@@ -64,11 +68,46 @@ void sheep::interact(std::shared_ptr<interacting_object> other) {
         
         if (SDL_GetTicks() - this->last_offspring > ReproduceTime_)
         {   
-            std::cout << "one prgnant";
             this->addProperty("pregnant");
             this->last_offspring = SDL_GetTicks();
         }
     }
-    
 }
 
+void sheep::fleeFromTarget() {
+    double targetx = this->getX() + (this->getX() - fleeFromX);
+    double targety = this->getY() + (this->getY() - fleeFromY);
+    if (targetx>=frame_width - frame_boundary - this->rect.w) {
+        targetx = frame_width - frame_boundary - this->rect.w;
+    }
+    else if (targetx<= 0) {
+        targetx = 1;
+    }
+
+    if (targety>=frame_height - frame_boundary - this->rect.h) {
+        targety = frame_height - frame_boundary- this->rect.h;
+    }
+    else if (targety<=0) {
+        targety = 1;
+    }
+    this->setTarget(targetx,targety);
+    this->calculate_steps();
+}
+
+void sheep::interactLong(std::shared_ptr<interacting_object> other) {
+    if (other->haveProperty("hunter") && (SDL_GetTicks() - lastBoost > boostTime) )
+    {
+        fleeFromX = other->getX();
+        fleeFromY = other->getY();
+        if ( !(this->haveProperty("fleeing")) ) {
+            this->addProperty("fleeing");
+            this->speed = this->speed * 1.4;
+
+            
+
+            this->lastBoost = SDL_GetTicks();
+            fleeFromTarget();
+        }
+
+    }
+}

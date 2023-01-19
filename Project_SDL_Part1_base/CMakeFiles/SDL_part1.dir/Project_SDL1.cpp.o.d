@@ -364,4 +364,6 @@ CMakeFiles/SDL_part1.dir/Project_SDL1.cpp.o: \
  /home/natale/Documents/projectSDL/Project_SDL_Part1_base/animal.h \
  /home/natale/Documents/projectSDL/Project_SDL_Part1_base/sheep.h \
  /home/natale/Documents/projectSDL/Project_SDL_Part1_base/wolf.h \
+ /home/natale/Documents/projectSDL/Project_SDL_Part1_base/sheperd.h \
+ /home/natale/Documents/projectSDL/Project_SDL_Part1_base/dog.h \
  /home/natale/Documents/projectSDL/Project_SDL_Part1_base/ground.h

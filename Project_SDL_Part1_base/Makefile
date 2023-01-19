@@ -177,6 +177,30 @@ animal.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SDL_part1.dir/build.make CMakeFiles/SDL_part1.dir/animal.cpp.s
 .PHONY : animal.cpp.s
 
+dog.o: dog.cpp.o
+.PHONY : dog.o
+
+# target to build an object file
+dog.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SDL_part1.dir/build.make CMakeFiles/SDL_part1.dir/dog.cpp.o
+.PHONY : dog.cpp.o
+
+dog.i: dog.cpp.i
+.PHONY : dog.i
+
+# target to preprocess a source file
+dog.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SDL_part1.dir/build.make CMakeFiles/SDL_part1.dir/dog.cpp.i
+.PHONY : dog.cpp.i
+
+dog.s: dog.cpp.s
+.PHONY : dog.s
+
+# target to generate assembly for a file
+dog.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SDL_part1.dir/build.make CMakeFiles/SDL_part1.dir/dog.cpp.s
+.PHONY : dog.cpp.s
+
 ground.o: ground.cpp.o
 .PHONY : ground.o
 
@@ -249,6 +273,30 @@ sheep.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SDL_part1.dir/build.make CMakeFiles/SDL_part1.dir/sheep.cpp.s
 .PHONY : sheep.cpp.s
 
+sheperd.o: sheperd.cpp.o
+.PHONY : sheperd.o
+
+# target to build an object file
+sheperd.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SDL_part1.dir/build.make CMakeFiles/SDL_part1.dir/sheperd.cpp.o
+.PHONY : sheperd.cpp.o
+
+sheperd.i: sheperd.cpp.i
+.PHONY : sheperd.i
+
+# target to preprocess a source file
+sheperd.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SDL_part1.dir/build.make CMakeFiles/SDL_part1.dir/sheperd.cpp.i
+.PHONY : sheperd.cpp.i
+
+sheperd.s: sheperd.cpp.s
+.PHONY : sheperd.s
+
+# target to generate assembly for a file
+sheperd.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SDL_part1.dir/build.make CMakeFiles/SDL_part1.dir/sheperd.cpp.s
+.PHONY : sheperd.cpp.s
+
 wolf.o: wolf.cpp.o
 .PHONY : wolf.o
 
@@ -288,6 +336,9 @@ help:
 	@echo "... animal.o"
 	@echo "... animal.i"
 	@echo "... animal.s"
+	@echo "... dog.o"
+	@echo "... dog.i"
+	@echo "... dog.s"
 	@echo "... ground.o"
 	@echo "... ground.i"
 	@echo "... ground.s"
@@ -297,6 +348,9 @@ help:
 	@echo "... sheep.o"
 	@echo "... sheep.i"
 	@echo "... sheep.s"
+	@echo "... sheperd.o"
+	@echo "... sheperd.i"
+	@echo "... sheperd.s"
 	@echo "... wolf.o"
 	@echo "... wolf.i"
 	@echo "... wolf.s"

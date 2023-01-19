@@ -139,10 +139,38 @@ CMakeFiles/SDL_part1.dir/wolf.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SDL_part1.dir/wolf.cpp.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/natale/Documents/projectSDL/Project_SDL_Part1_base/wolf.cpp -o CMakeFiles/SDL_part1.dir/wolf.cpp.s
 
+CMakeFiles/SDL_part1.dir/sheperd.cpp.o: CMakeFiles/SDL_part1.dir/flags.make
+CMakeFiles/SDL_part1.dir/sheperd.cpp.o: sheperd.cpp
+CMakeFiles/SDL_part1.dir/sheperd.cpp.o: CMakeFiles/SDL_part1.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/natale/Documents/projectSDL/Project_SDL_Part1_base/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SDL_part1.dir/sheperd.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SDL_part1.dir/sheperd.cpp.o -MF CMakeFiles/SDL_part1.dir/sheperd.cpp.o.d -o CMakeFiles/SDL_part1.dir/sheperd.cpp.o -c /home/natale/Documents/projectSDL/Project_SDL_Part1_base/sheperd.cpp
+
+CMakeFiles/SDL_part1.dir/sheperd.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SDL_part1.dir/sheperd.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/natale/Documents/projectSDL/Project_SDL_Part1_base/sheperd.cpp > CMakeFiles/SDL_part1.dir/sheperd.cpp.i
+
+CMakeFiles/SDL_part1.dir/sheperd.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SDL_part1.dir/sheperd.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/natale/Documents/projectSDL/Project_SDL_Part1_base/sheperd.cpp -o CMakeFiles/SDL_part1.dir/sheperd.cpp.s
+
+CMakeFiles/SDL_part1.dir/dog.cpp.o: CMakeFiles/SDL_part1.dir/flags.make
+CMakeFiles/SDL_part1.dir/dog.cpp.o: dog.cpp
+CMakeFiles/SDL_part1.dir/dog.cpp.o: CMakeFiles/SDL_part1.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/natale/Documents/projectSDL/Project_SDL_Part1_base/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/SDL_part1.dir/dog.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SDL_part1.dir/dog.cpp.o -MF CMakeFiles/SDL_part1.dir/dog.cpp.o.d -o CMakeFiles/SDL_part1.dir/dog.cpp.o -c /home/natale/Documents/projectSDL/Project_SDL_Part1_base/dog.cpp
+
+CMakeFiles/SDL_part1.dir/dog.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SDL_part1.dir/dog.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/natale/Documents/projectSDL/Project_SDL_Part1_base/dog.cpp > CMakeFiles/SDL_part1.dir/dog.cpp.i
+
+CMakeFiles/SDL_part1.dir/dog.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SDL_part1.dir/dog.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/natale/Documents/projectSDL/Project_SDL_Part1_base/dog.cpp -o CMakeFiles/SDL_part1.dir/dog.cpp.s
+
 CMakeFiles/SDL_part1.dir/ground.cpp.o: CMakeFiles/SDL_part1.dir/flags.make
 CMakeFiles/SDL_part1.dir/ground.cpp.o: ground.cpp
 CMakeFiles/SDL_part1.dir/ground.cpp.o: CMakeFiles/SDL_part1.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/natale/Documents/projectSDL/Project_SDL_Part1_base/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SDL_part1.dir/ground.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/natale/Documents/projectSDL/Project_SDL_Part1_base/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/SDL_part1.dir/ground.cpp.o"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SDL_part1.dir/ground.cpp.o -MF CMakeFiles/SDL_part1.dir/ground.cpp.o.d -o CMakeFiles/SDL_part1.dir/ground.cpp.o -c /home/natale/Documents/projectSDL/Project_SDL_Part1_base/ground.cpp
 
 CMakeFiles/SDL_part1.dir/ground.cpp.i: cmake_force
@@ -160,6 +188,8 @@ SDL_part1_OBJECTS = \
 "CMakeFiles/SDL_part1.dir/animal.cpp.o" \
 "CMakeFiles/SDL_part1.dir/sheep.cpp.o" \
 "CMakeFiles/SDL_part1.dir/wolf.cpp.o" \
+"CMakeFiles/SDL_part1.dir/sheperd.cpp.o" \
+"CMakeFiles/SDL_part1.dir/dog.cpp.o" \
 "CMakeFiles/SDL_part1.dir/ground.cpp.o"
 
 # External object files for target SDL_part1
@@ -170,10 +200,12 @@ SDL_part1: CMakeFiles/SDL_part1.dir/Project_SDL1.cpp.o
 SDL_part1: CMakeFiles/SDL_part1.dir/animal.cpp.o
 SDL_part1: CMakeFiles/SDL_part1.dir/sheep.cpp.o
 SDL_part1: CMakeFiles/SDL_part1.dir/wolf.cpp.o
+SDL_part1: CMakeFiles/SDL_part1.dir/sheperd.cpp.o
+SDL_part1: CMakeFiles/SDL_part1.dir/dog.cpp.o
 SDL_part1: CMakeFiles/SDL_part1.dir/ground.cpp.o
 SDL_part1: CMakeFiles/SDL_part1.dir/build.make
 SDL_part1: CMakeFiles/SDL_part1.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/natale/Documents/projectSDL/Project_SDL_Part1_base/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable SDL_part1"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/natale/Documents/projectSDL/Project_SDL_Part1_base/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable SDL_part1"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SDL_part1.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

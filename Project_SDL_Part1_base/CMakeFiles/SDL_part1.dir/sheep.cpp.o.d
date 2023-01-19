@@ -364,4 +364,6 @@ CMakeFiles/SDL_part1.dir/sheep.cpp.o: \
  /usr/include/c++/11/bits/random.tcc \
  /home/natale/Documents/projectSDL/Project_SDL_Part1_base/animal.h \
  /home/natale/Documents/projectSDL/Project_SDL_Part1_base/wolf.h \
+ /home/natale/Documents/projectSDL/Project_SDL_Part1_base/sheperd.h \
+ /home/natale/Documents/projectSDL/Project_SDL_Part1_base/dog.h \
  /home/natale/Documents/projectSDL/Project_SDL_Part1_base/ground.h

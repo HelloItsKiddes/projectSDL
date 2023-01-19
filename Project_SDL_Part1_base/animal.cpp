@@ -17,11 +17,7 @@ animal::~animal() {
     SDL_FreeSurface(image_ptr_);
 };
 
-void animal::draw() {
-    this->rect.x = this->x;
-    this->rect.y = this->y;
-    SDL_BlitScaled(image_ptr_, NULL, window_surface_ptr_, &rect);
-};
+
 
 void animal::move() {
     return;
@@ -36,6 +32,11 @@ void animal::setRandTarget() {
     this->target.x = x;
     this->target.y = y;
     calculate_steps();
+}
+
+void animal::setTarget(double x, double y) {
+    this->target.x = x;
+    this->target.y = y;
 }
 
 void animal::calculate_steps() {

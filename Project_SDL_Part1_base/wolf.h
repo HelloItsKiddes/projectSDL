@@ -9,6 +9,9 @@
 class wolf : public animal {
   private:
     int last_meal = 0;
+  protected: 
+    double fleeFromX;
+    double fleeFromY;
   public:
 
   wolf(SDL_Surface *window_surface_ptr);
@@ -20,6 +23,10 @@ class wolf : public animal {
   void setTargetY(int y);
 
   void interact(std::shared_ptr<interacting_object> other) override;
+
+  void interactLong(std::shared_ptr<interacting_object> other) override;
+
+  void fleeFromTarget();
 };
 
 #endif 

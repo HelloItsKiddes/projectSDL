@@ -4,8 +4,6 @@
 #include <float.h> 
 
 
-
-
 //ground part -------
 ground::ground(SDL_Surface* window_surface_ptr) {
     window_surface_ptr_ = window_surface_ptr;
@@ -18,6 +16,15 @@ ground::~ground()
 
 }
 
+void ground::addSheperd(SDL_Surface * window_surface_ptr_) {
+    this->sheperd_ = std::make_shared<sheperd>(window_surface_ptr_);
+}
+
+void ground::addDog(SDL_Surface * window_surface_ptr_)
+{
+    animalsVect_.push_back(std::make_shared<dog>(window_surface_ptr_,this->sheperd_));
+}
+
 void ground::add_animal(std::shared_ptr<animal> newAnimal) {
     animalsVect_.push_back(newAnimal);
 }
@@ -27,7 +34,9 @@ void ground::remove_animal(int animalToRemove) {
 }
 
 
-
+std::shared_ptr<sheperd> ground::getSheperd() {
+    return sheperd_;
+}
 
 
 
@@ -37,9 +46,13 @@ void ground::make_interact() {
     {
         for (std::shared_ptr<animal> &anotherAnimal : animalsVect_)
         {
-            if (oneAnimal->distanceTo(anotherAnimal)<=interact_range) {
+            if (oneAnimal->distanceTo(anotherAnimal)<=shortInteract_range) {
                 oneAnimal->interact(anotherAnimal);
             }
+            if (oneAnimal->distanceTo(anotherAnimal)<=longInteract_range) {
+                oneAnimal->interactLong(anotherAnimal);
+            }
+                
         }
     }
 }
@@ -49,11 +62,12 @@ void ground::update(SDL_Surface *window_surface_ptr_) {
     {
         setTargets();
         make_interact();
-        
         oneAnimal->draw();
         oneAnimal->move();
 
     }
+    sheperd_->move();
+    sheperd_->draw();
 }
 
 void ground::setTargets() {
@@ -71,8 +85,7 @@ void ground::setTargets() {
                         {
                             std::cout<<anotherAnimal->getX();
                         }
-                        oneAnimal->setTargetX(anotherAnimal->getX());
-                        oneAnimal->setTargetY(anotherAnimal->getY());
+                        oneAnimal->setTarget(anotherAnimal->getX(),anotherAnimal->getY());
                     }
                 }
             }

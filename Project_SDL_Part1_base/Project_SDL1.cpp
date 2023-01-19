@@ -38,8 +38,9 @@ application::application(unsigned n_sheep, unsigned n_wolf) {
     ground_ = std::make_unique<ground>(window_surface_ptr_);
 
     //std::vector<std::shared_ptr<animal>> animals = ground_->getVect(); //possible memory leak. Need to be std::shared_ptr<std::vector<std::shared_ptr<animal>>> ????
-    
-
+    ground_->addSheperd(window_surface_ptr_);
+    ground_->addDog(window_surface_ptr_);
+    this->sheperd_ = ground_->getSheperd();
 
     for (size_t i = 0; i < n_sheep; i++)
          ground_->add_animal(std::make_shared<sheep>(window_surface_ptr_));
@@ -50,6 +51,7 @@ application::application(unsigned n_sheep, unsigned n_wolf) {
         ground_->add_animal(std::make_shared<wolf>(window_surface_ptr_));
 
     
+
     //animals = ground_->getVect();
 
     
@@ -84,6 +86,46 @@ void application::remove_dead() {
     }
 }
 
+void application::getInputs() {
+
+    SDL_Event event;
+    while(SDL_PollEvent( &event)>0) {
+        if (event.type == SDL_KEYDOWN) {
+            if (event.key.repeat == 0)
+            { 
+                if (event.key.keysym.scancode == SDL_SCANCODE_A) {
+                sheperd_->setLeft(1);
+                }
+                if (event.key.keysym.scancode == SDL_SCANCODE_W){
+                    sheperd_->setUp(1);
+                }
+                if (event.key.keysym.scancode == SDL_SCANCODE_D) {
+                    sheperd_->setRight(1);
+                }
+                if (event.key.keysym.scancode == SDL_SCANCODE_S) {
+                    sheperd_->setDown(1);
+                }
+            }
+        }
+        if (event.type == SDL_KEYUP) {
+            if (event.key.repeat == 0) {
+                if (event.key.keysym.scancode == SDL_SCANCODE_A) {
+                sheperd_->setLeft(0);
+                }
+                if (event.key.keysym.scancode == SDL_SCANCODE_W){
+                    sheperd_->setUp(0);
+                }
+                if (event.key.keysym.scancode == SDL_SCANCODE_D) {
+                    sheperd_->setRight(0);
+                }
+                if (event.key.keysym.scancode == SDL_SCANCODE_S) {
+                    sheperd_->setDown(0);
+                }
+            }
+        }
+    }
+
+}
 
 int application::loop(unsigned period) {
     SDL_Rect windowsRect = SDL_Rect{ 0,0,frame_width, frame_height };
@@ -92,12 +134,13 @@ int application::loop(unsigned period) {
     while (!quit && (SDL_GetTicks() <= period * 1000)) { 
         addBabies();
         remove_dead();
+        getInputs();
         SDL_FillRect(window_surface_ptr_, &windowsRect, SDL_MapRGB(window_surface_ptr_->format, 0, 255, 0));
-        SDL_PollEvent(&window_event_);
-        if (window_event_.type == SDL_WINDOWEVENT && window_event_.window.event == SDL_WINDOWEVENT_CLOSE) //seems like u have to do that
-            break;
+        while (SDL_PollEvent(&window_event_)) {
+            if (window_event_.type == SDL_WINDOWEVENT && window_event_.window.event == SDL_WINDOWEVENT_CLOSE) //seems like u have to do that
+                break;
+        }
         ground_->update(window_surface_ptr_);
-        
         SDL_UpdateWindowSurface(window_ptr_);
         SDL_Delay(frame_time * 30);  // Pause execution for framerate milliseconds
     }
@@ -121,6 +164,11 @@ interacting_object::~interacting_object() {
 void interacting_object::interact(std::shared_ptr<interacting_object> other) {
     return;
 }
+
+void interacting_object::interactLong(std::shared_ptr<interacting_object> other) {
+    return;
+}
+
 void interacting_object::printProps(){
     for (std::string prop : props)
     {
@@ -128,6 +176,14 @@ void interacting_object::printProps(){
         std::cout << "\n";
     }
     std::cout << "\n";
+}
+
+double interacting_object::getX() {
+      return x;
+    }
+
+double interacting_object::getY() { 
+    return y;
 }
 
 rendered_object::rendered_object(SDL_Surface* window_surface_ptr, const std::string& file_path) {
@@ -141,6 +197,12 @@ rendered_object::rendered_object(SDL_Surface* window_surface_ptr, const std::str
     this->rect.h = this->rect.h/2;
     this->rect.w = this->rect.w/2;
 }
+
+void rendered_object::draw() {
+    this->rect.x = this->x;
+    this->rect.y = this->y;
+    SDL_BlitScaled(image_ptr_, NULL, window_surface_ptr_, &rect);
+};
 
 int rendered_object::getX() {
     return this->x;
@@ -191,6 +253,24 @@ moving_object::~moving_object()
 {
 
 }
+
+void moving_object::move() {
+
+}
+
+playable_character::playable_character(const std::string& file_path, SDL_Surface* window_surface_ptr) : moving_object(window_surface_ptr,file_path) {
+
+}
+
+void playable_character::move() {
+
+}
+playable_character::~playable_character() {
+
+}
+
+
+
 
 namespace {
 // Defining a namespace without a name -> Anonymous workspace

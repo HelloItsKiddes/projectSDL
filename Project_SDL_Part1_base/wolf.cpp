@@ -20,8 +20,16 @@ void wolf::move() {
     if (SDL_GetTicks() - last_meal > dieFromHunger) {
         this->addProperty("dead");
     }
-    calculate_steps();
-    moveToTarget();
+    if (this->haveProperty("fleeing")) {
+        fleeFromTarget();
+        moveToTarget();
+        this->removeProperty("fleeing");
+    }
+    else {
+        calculate_steps();
+        moveToTarget();
+    }
+   
 
 }
 
@@ -41,11 +49,43 @@ void wolf::interact(std::shared_ptr<interacting_object> other) {
         other->addProperty("dead");
         this->last_meal = SDL_GetTicks();
     }
+
 }
+
+
+
+void wolf::interactLong(std::shared_ptr<interacting_object> other) {
+    if (other->haveProperty("dog") )
+    {
+        this->addProperty("fleeing");
+        fleeFromX = other->getX();
+        fleeFromY = other->getY();
+    }
+}
+
 wolf::~wolf() {
 
 }
 
+void wolf::fleeFromTarget() {
+    double targetx = this->getX() + (this->getX() - fleeFromX);
+    double targety = this->getY() + (this->getY() - fleeFromY);
+    if (targetx>=frame_width - frame_boundary - this->rect.w) {
+        targetx = frame_width - frame_boundary - this->rect.w;
+    }
+    else if (targetx<= 0) {
+        targetx = 1;
+    }
+
+    if (targety>=frame_height - frame_boundary - this->rect.h) {
+        targety = frame_height - frame_boundary- this->rect.h;
+    }
+    else if (targety<=0) {
+        targety = 1;
+    }
+    this->setTarget(targetx,targety);
+    this->calculate_steps();
+}
 
 /*
 std::shared_ptr<sheep> wolf::findTarget() {
